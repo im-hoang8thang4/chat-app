@@ -13,7 +13,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   TextField,
 } from "@mui/material";
 import { signOut } from "firebase/auth";
@@ -22,8 +21,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import * as EmailValidator from "email-validator";
 import { addDoc, collection, query, where } from "firebase/firestore";
 import { Conversation } from "../interface";
+import ConversationSelectted from "./ConversationSelectted";
+
 const Sidebar = () => {
   const [loggedInUser, _loading, _error] = useAuthState(auth);
+
   const [openDialog, setopnenDialog] = useState(false);
 
   const [recipientEmail, setRecipientEmail] = useState("");
@@ -32,7 +34,7 @@ const Sidebar = () => {
     setopnenDialog(false);
     setRecipientEmail("");
   };
-// kiểm tra đoạn hội thoại đã tồn tại hay chưa
+  // kiểm tra đoạn hội thoại đã tồn tại hay chưa
   const queryGetConversationsForCurrentUser = query(
     collection(db, "conversations"),
     where("users", "array-contains", loggedInUser?.email)
@@ -45,9 +47,9 @@ const Sidebar = () => {
     conversationSnapshot?.docs.find((conversation) =>
       (conversation.data() as Conversation).users.includes(recipientEmail)
     );
-// kiểm tra có đang chat với chính mình không
+  // kiểm tra có đang chat với chính mình không
   const isInvitingSelf = recipientEmail === loggedInUser?.email;
-// tạo cuộc hội thoại mới
+  // tạo cuộc hội thoại mới
   const createConversation = async () => {
     if (!recipientEmail) return;
 
@@ -107,7 +109,13 @@ const Sidebar = () => {
         Start a new conversation
       </button>
 
-      
+      {conversationSnapshot?.docs.map((conversation) => (
+        <ConversationSelectted
+          id={conversation.id}
+          key={conversation.id}
+          conversationUser={(conversation.data() as Conversation).users}
+        />
+      ))}
 
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogContent>
