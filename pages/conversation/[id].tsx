@@ -2,6 +2,7 @@ import { doc, getDoc, getDocs } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useAuthState } from "react-firebase-hooks/auth";
+import MessagesScreen from "../../components/MessagesScreen";
 
 import Sidebar from "../../components/Sidebar";
 import { auth, db } from "../../config/firebase";
@@ -15,14 +16,13 @@ export interface Props {
 const Conversation = ({ conversation, messages }: Props) => {
   const [loggedInUser, _loading, _error] = useAuthState(auth);
   const recipientEmail = getRecipientEmail(conversation.users, loggedInUser);
-  console.log(messages)
   return (
     <div className="flex">
       <Head>
         <title>{`Conversation with ${recipientEmail}`}</title>
       </Head>
 	  <Sidebar />
-      {messages.map(message => <p>{JSON.stringify(message)}</p>)}
+      <MessagesScreen conversation={conversation} messages={messages} />
     </div>
   );
 };

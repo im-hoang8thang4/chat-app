@@ -1,13 +1,7 @@
-import Avatar from "@mui/material/Avatar";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import ChatIcon from "@mui/icons-material/Chat";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
 import LogoutIcon from "@mui/icons-material/Logout";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import SearchIcon from "@mui/icons-material/Search";
-import { useState } from "react";
-import Dialog from "@mui/material/Dialog";
-import { useCollection } from "react-firebase-hooks/firestore";
 import {
   Button,
   DialogActions,
@@ -15,11 +9,17 @@ import {
   DialogContentText,
   TextField,
 } from "@mui/material";
-import { signOut } from "firebase/auth";
-import { auth, db } from "../config/firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import Avatar from "@mui/material/Avatar";
+import Dialog from "@mui/material/Dialog";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
 import * as EmailValidator from "email-validator";
+import { signOut } from "firebase/auth";
 import { addDoc, collection, query, where } from "firebase/firestore";
+import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollection } from "react-firebase-hooks/firestore";
+import { auth, db } from "../config/firebase";
 import { Conversation } from "../interface";
 import ConversationSelectted from "./ConversationSelectted";
 
