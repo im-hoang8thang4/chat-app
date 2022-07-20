@@ -8,7 +8,7 @@ const Message = ({message} : {message: Imessage}) => {
 
   return loggedInUser?.email === message.user ? (
 <div className='m-[10px]'>
-    <div className='bg-gradient-to-t from-orange-400 to-sky-400 flex flex-col w-fit min-w-[30%] max-w-[90%] ml-auto p-3 rounded-xl break-all gap-2'>
+    <div className='bg-gradient-to-r from-rose-100 to-teal-100 flex flex-col w-fit min-w-[30%] max-w-[48%] ml-auto p-3 rounded-xl break-all gap-2'>
         <div className=''>
             {message.text}
         </div>
@@ -19,7 +19,7 @@ const Message = ({message} : {message: Imessage}) => {
 </div>
   ) :(
     <div className='m-[10px]'>
-    <div className='bg-gray-300 flex flex-col w-fit min-w-[30%] max-w-[90%] mr-auto p-3 rounded-xl break-all gap-2'>
+    <div className='bg-gray-300 flex flex-col w-fit min-w-[30%] max-w-[48%] mr-auto p-3 rounded-xl break-all gap-2'>
         <div className=''>
             {message.text}
         </div>
