@@ -23,6 +23,7 @@ import {
 } from "../utils/getMessagesInConversation";
 import Message from "./Message";
 import RecipientAvatar from "./RecipientAvatar";
+import Spinner from "./Spinner";
 const MessagesScreen = ({
   conversation,
   messages,
@@ -54,7 +55,7 @@ const MessagesScreen = ({
   };
 
   const sendMessage = async () => {
-    await await setDoc(
+    await setDoc(
       doc(db, "users", loggedInUser?.email as string),
       {
         email: loggedInUser?.email,
@@ -86,7 +87,7 @@ const MessagesScreen = ({
   const scrollToBottom = () => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
 }
-
+  if(!conversation || !messages) return <Spinner />
   return (
     <div className="w-full flex flex-col relative">
       <div className="flex justify-start p-3 gap-3 items-center bg-gray-50 border-solid border-gray-200 border-b-[1px]  sticky">

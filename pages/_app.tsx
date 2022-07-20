@@ -5,6 +5,7 @@ import { auth, db } from "../config/firebase";
 import Login from "./login";
 import { useEffect } from "react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
+import Spinner from "../components/Spinner";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [loggedInUser, loading, _error] = useAuthState(auth);
@@ -30,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
   }, [loggedInUser]);
 
-  if (loading) return <h1>Loading....</h1>;
+  if (loading) return <Spinner />
   if (!loggedInUser) return <Login />;
   return <Component {...pageProps} />;
 }
