@@ -108,7 +108,7 @@ const Sidebar = () => {
       >
         Start a new conversation
       </button>
-
+      <div className="flex flex-col overflow-y-auto h-[83vh]">
       {conversationSnapshot?.docs.map((conversation) => (
         <ConversationSelectted
           id={conversation.id}
@@ -116,6 +116,8 @@ const Sidebar = () => {
           conversationUser={(conversation.data() as Conversation).users}
         />
       ))}
+      </div>
+      
 
       <Dialog open={openDialog} onClose={handleClose}>
         <DialogContent>
