@@ -1,10 +1,12 @@
 import { doc, getDoc, getDocs } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import MessagesScreen from "../../components/MessagesScreen";
 
 import Sidebar from "../../components/Sidebar";
+import Spinner from "../../components/Spinner";
 import { auth, db } from "../../config/firebase";
 import { Conversation, Imessage } from "../../interface";
 import { generateQuerryGetMessage, transformMesage } from "../../utils/getMessagesInConversation";
@@ -14,9 +16,14 @@ export interface Props {
   messages: Imessage[]
 }
 const Conversation = ({ conversation, messages }: Props) => {
+  const [isLoading, setisLoading] = useState(false)
   const [loggedInUser, _loading, _error] = useAuthState(auth);
   const recipientEmail = getRecipientEmail(conversation.users, loggedInUser);
-  return (
+  useEffect(()=>{
+    if(!conversation || !loggedInUser) setisLoading(true)
+  })
+  
+  return isLoading ? <Spinner /> : (
     <div className="flex">
       <Head>
         <title>{`Conversation with ${recipientEmail}`}</title>

@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useRecipient } from "../hooks/useRecipient";
 import { Conversation } from "../interface";
 import RecipientAvatar from "./RecipientAvatar";
+import Spinner from "./Spinner";
 
 const ConversationSelectted = ({
   id,
