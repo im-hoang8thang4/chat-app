@@ -10,7 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { useRouter } from "next/router";
-import { KeyboardEventHandler, useRef, useState } from "react";
+import { KeyboardEventHandler, useEffect, useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { auth, db } from "../config/firebase";
@@ -38,6 +38,12 @@ const MessagesScreen = ({
   const conversationId = router.query.id;
   const querryMessages = generateQuerryGetMessage(conversationId as string);
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
+  const scrollToBottom = () => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
+}
+  useEffect(()=>{
+    scrollToBottom()
+  },[])
   const [mesagesSnapshot, getMesloading, __error] =
     useCollection(querryMessages);
   const showMessage = () => {
@@ -84,9 +90,7 @@ const MessagesScreen = ({
 
     }
   };
-  const scrollToBottom = () => {
-    endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
-}
+ 
   if(!conversation || !messages) return <Spinner />
   return (
     <div className="w-full flex flex-col relative">
