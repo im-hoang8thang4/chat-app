@@ -28,7 +28,7 @@ const Conversation = (props: Props) => {
       const tempMe = await props.messages;
       setisLoading(false);
     })();
-  }, [props.conversation]);
+  }, []);
   const recipientEmail = getRecipientEmail(
     props.conversation.users,
     loggedInUser
