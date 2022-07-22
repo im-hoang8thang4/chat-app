@@ -38,12 +38,19 @@ const MessagesScreen = ({
   const conversationId = router.query.id;
   const querryMessages = generateQuerryGetMessage(conversationId as string);
   const endOfMessagesRef = useRef<HTMLDivElement>(null)
+  const messagesRef =  useRef<HTMLDivElement>(null)
   const scrollToBottom = () => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: 'smooth' })
 }
+const autoScrollBottom =() =>{
+  if(messagesRef.current){
+    messagesRef!.current.scrollTop = messagesRef.current!.scrollHeight;
+  }
+ }
+ 
   useEffect(()=>{
-    scrollToBottom()
-  },[])
+    autoScrollBottom()
+  },[conversationId])
   const [mesagesSnapshot, getMesloading, __error] =
     useCollection(querryMessages);
   const showMessage = () => {
@@ -109,7 +116,9 @@ const MessagesScreen = ({
           )}
         </div>
       </div>
-      <div className="flex flex-col overflow-y-auto max-h-[90vh]">
+      <div className="flex flex-col overflow-y-auto max-h-[90vh]"
+      ref={messagesRef}
+      >
         {showMessage()}
         <div className="mb-[40px]" ref={endOfMessagesRef}></div>
       </div>
@@ -129,7 +138,7 @@ const MessagesScreen = ({
         <IconButton onClick={sendMessage} disabled={!newMessage}>
           <SendIcon />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={autoScrollBottom}>
           <MicIcon />
         </IconButton>
       </div>

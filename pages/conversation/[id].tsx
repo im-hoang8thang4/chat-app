@@ -9,27 +9,44 @@ import Sidebar from "../../components/Sidebar";
 import Spinner from "../../components/Spinner";
 import { auth, db } from "../../config/firebase";
 import { Conversation, Imessage } from "../../interface";
-import { generateQuerryGetMessage, transformMesage } from "../../utils/getMessagesInConversation";
+import {
+  generateQuerryGetMessage,
+  transformMesage,
+} from "../../utils/getMessagesInConversation";
 import { getRecipientEmail } from "../../utils/getRecipientEmail";
 export interface Props {
   conversation: Conversation;
-  messages: Imessage[]
+  messages: Imessage[];
 }
-const Conversation = ({ conversation, messages }: Props) => {
-  const [isLoading, setisLoading] = useState(false)
+const Conversation = (props: Props) => {
+  const [isLoading, setisLoading] = useState(false);
   const [loggedInUser, _loading, _error] = useAuthState(auth);
-  const recipientEmail = getRecipientEmail(conversation.users, loggedInUser);
-  useEffect(()=>{
-    if(!conversation || !loggedInUser) setisLoading(true)
-  })
-  
-  return isLoading ? <Spinner /> : (
+  useEffect(() => {
+    (async () => {
+      setisLoading(true);
+      const tempCon = await props.conversation;
+      const tempMe = await props.messages;
+      setisLoading(false);
+    })();
+  }, [props.conversation]);
+  const recipientEmail = getRecipientEmail(
+    props.conversation.users,
+    loggedInUser
+  );
+
+  return (
     <div className="flex">
       <Head>
         <title>{`Conversation with ${recipientEmail}`}</title>
       </Head>
-	  <Sidebar />
-      <MessagesScreen conversation={conversation} messages={messages} />
+      <Sidebar />
+      {isLoading && <Spinner />}
+      {!isLoading && (
+        <MessagesScreen
+          conversation={props.conversation}
+          messages={props.messages}
+        />
+      )}
     </div>
   );
 };
@@ -40,16 +57,24 @@ export const getServerSideProps: GetServerSideProps<
   Props,
   { id: string }
 > = async (context) => {
-  const conversationId = context.params?.id;
-  const conversationRef = doc(db, "conversations", conversationId as string);
-  const conversationSnapshot = await getDoc(conversationRef);
-  const querryMessages = generateQuerryGetMessage(conversationId)
-  const mesagesSnapshot = await getDocs(querryMessages)
-  const messages = mesagesSnapshot.docs.map(messageDoc => transformMesage(messageDoc))
   return {
-    props: {
-      conversation: conversationSnapshot.data() as Conversation,
-      messages
-    },
+    props: (async function () {
+      const conversationId = context.params?.id;
+      const conversationRef = doc(
+        db,
+        "conversations",
+        conversationId as string
+      );
+      const conversationSnapshot = await getDoc(conversationRef);
+      const querryMessages = generateQuerryGetMessage(conversationId);
+      const mesagesSnapshot = await getDocs(querryMessages);
+      const messages = mesagesSnapshot.docs.map((messageDoc) =>
+        transformMesage(messageDoc)
+      );
+      return {
+        conversation: conversationSnapshot.data() as Conversation,
+        messages,
+      };
+    })(),
   };
 };
