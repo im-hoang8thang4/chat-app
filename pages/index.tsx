@@ -1,15 +1,15 @@
-import type { NextPage } from 'next'
+import type { NextPage } from "next";
 import Head from "next/head";
-import Sidebar from '../components/Sidebar'
+import Sidebar from "../components/Sidebar";
 const Home: NextPage = () => {
   return (
-   <div className='flex'>
-    <Head>
+    <div className="flex">
+      <Head>
         <title>Chat App</title>
       </Head>
-    <Sidebar />
-   </div>
-  )
-}
+      <Sidebar />
+    </div>
+  );
+};
 
-export default Home
+export default Home;

@@ -6,8 +6,6 @@ import Login from "./login";
 import { useEffect } from "react";
 import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import Spinner from "../components/Spinner";
-import NextNProgress from "nextjs-progressbar";
-
 function MyApp({ Component, pageProps }: AppProps) {
   const [loggedInUser, loading, _error] = useAuthState(auth);
 
@@ -35,10 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   if (loading) return <Spinner />;
   if (!loggedInUser) return <Login />;
   return (
-    <>
-      <NextNProgress />
-      <Component {...pageProps} />;
-    </>
+      <Component {...pageProps} />
   );
 }
 

@@ -24,17 +24,16 @@ const Conversation = (props: Props) => {
   useEffect(() => {
     (async () => {
       setisLoading(true);
-      const tempCon = await props.conversation;
-      const tempMe = await props.messages;
+     const tempc=  await props.conversation;
+     const tempm= await props.messages;
       setisLoading(false);
     })();
   }, []);
   const recipientEmail = getRecipientEmail(
     props.conversation.users,
     loggedInUser
-  );
-
-  return (
+  ); 
+    return (
     <div className="flex">
       <Head>
         <title>{`Conversation with ${recipientEmail}`}</title>
