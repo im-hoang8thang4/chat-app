@@ -100,7 +100,8 @@ const autoScrollBottom =() =>{
  
   if(!conversation || !messages) return <Spinner />
   return (
-    <div className="w-full flex flex-col relative">
+    <div className="w-full h-full flex flex-col relative">
+      
       <div className="flex justify-start p-3 gap-3 items-center bg-gray-50 border-solid border-gray-200 border-b-[1px]  sticky">
         <RecipientAvatar
           recipientEmail={recipientEmail}

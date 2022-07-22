@@ -14,6 +14,7 @@ import {
   transformMesage,
 } from "../../utils/getMessagesInConversation";
 import { getRecipientEmail } from "../../utils/getRecipientEmail";
+import NextNProgress from "nextjs-progressbar";
 export interface Props {
   conversation: Conversation;
   messages: Imessage[];
@@ -24,28 +25,35 @@ const Conversation = (props: Props) => {
   useEffect(() => {
     (async () => {
       setisLoading(true);
-     const tempc=  await props.conversation;
-     const tempm= await props.messages;
+      const tempc = await props.conversation;
+      const tempm = await props.messages;
       setisLoading(false);
     })();
-  }, []);
+  }, [props.conversation]);
+  const showMessage = () => {
+    return isLoading ? (
+      <Spinner />
+    ) : (
+      <MessagesScreen
+        conversation={props.conversation}
+        messages={props.messages}
+      />
+    );
+  };
   const recipientEmail = getRecipientEmail(
     props.conversation.users,
     loggedInUser
-  ); 
-    return (
+  );
+  return (
     <div className="flex">
       <Head>
         <title>{`Conversation with ${recipientEmail}`}</title>
       </Head>
+      <NextNProgress />
       <Sidebar />
-      {isLoading && <Spinner />}
-      {!isLoading && (
-        <MessagesScreen
-          conversation={props.conversation}
-          messages={props.messages}
-        />
-      )}
+      <div className="w-full h-screen">
+      {showMessage()}
+      </div>
     </div>
   );
 };
